@@ -1,91 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="public" title="QT_best_answer_count_macros" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro name="member_macros" arg-user="!">
-	<xf:set var="$_QT_property" value="{{ property('QT_total_best_answers_positions') }}" />
-
-	<!--[QT:stat_pairs:above_best_answers]-->
-	<xf:if is="{{ $_QT_property.member_profile_page }}">
-		<dl class="pairs pairs--rows pairs--rows--centered">
-			<dt>{{ phrase('QT_best_answers') }}</dt>
-			<dd>
-				<a href="{{ link('members/bestAnswers', $user) }}" class="fauxBlockLink-linkRow u-concealed">
-					{$user.QT_best_answer_count|number}
-				</a>
-			</dd>
-		</dl>
-	</xf:if>
-</xf:macro>
-
-<xf:macro name="message_macros" arg-extras="!" arg-user="!">
-	<xf:if is="$extras.QT_best_answer_count">
-		<dl class="pairs pairs--justified">
-			<dt>{{ phrase('QT_best_answers') }}</dt>
-			<dd>{$user.QT_best_answer_count|number}</dd>
-		</dl>
-	</xf:if>
-</xf:macro>
-
-<xf:macro name="account_visitor_menu">
-	<xf:set var="$_QT_property" value="{{ property('QT_total_best_answers_positions') }}" />
-
-	<!--[QT:stat_pairs:above_best_answers]-->
-	<xf:if is="{{ $_QT_property.member_account_menu }}">
-		<dl class="pairs pairs--justified fauxBlockLink">
-			<dt>{{ phrase('QT_best_answers') }}</dt>
-			<dd>
-				<a href="{{ link('members/bestAnswers', $xf.visitor) }}" class="fauxBlockLink-linkRow u-concealed">
-					{$xf.visitor.QT_best_answer_count|number}
-				</a>
-			</dd>
-		</dl>
-	</xf:if>
-</xf:macro>]]></template>
-  <template type="email" title="QT_best_answer_selected" version_id="2000070" version_string="2.0.0"><![CDATA[<mail:subject>
-	{{ phrase('QT_question_x_best_answer', {
-		'title': prefix('thread', $thread, 'escaped') . $thread.title
-	}) }}
-</mail:subject>
-
-<xf:if is="$receiver.user_id === $post.user_id">
-	{{ phrase('QT_question_your_answer_best_selected_email_html', {
-		'receiver': $receiver.username,
-		'sender': username_link_email($sender, $sender.username),
-		'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
-	}) }}	
-	<xf:else />
-	{{ phrase('QT_question_best_answer_selected_email_html', {
-		'receiver': $receiver.username,
-		'sender': username_link_email($sender, $sender.username),
-		'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
-	}) }}
-</xf:if>
-
-<h2><a href="{{ link('canonical:posts', $post) }}">{{ prefix('thread', $thread, 'escaped') }}{$thread.title}</a></h2>
-
-<xf:if is="$xf.options.emailWatchedThreadIncludeMessage">
-	<div class="message">{{ bb_code_type('emailHtml', $post.message, 'post', $post) }}</div>
-</xf:if>
-
-<xf:macro template="thread_forum_macros" name="go_thread_bar" arg-thread="{$thread}" arg-watchType="threads" />
-
-<xf:macro template="QT_email_macros" name="watched_question_footer" arg-thread="{$thread}" />]]></template>
-  <template type="email" title="QT_email_macros" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro name="watched_question_footer" arg-thread="!">
-	{{ phrase('QT_watched_question_email_html_footer', {
-		'thread': '<a href="' . link('canonical:threads', $thread) . '">' . $thread.title . '</a>',
-		'board': $xf.options.boardTitle,
-		'disable_this_link': link('canonical:email-stop/content', $xf.toUser, {'t': 'thread', 'id': $thread.thread_id}),
-		'disable_all_link': link('canonical:email-stop/all', $xf.toUser)
-	}) }}
-</xf:macro>]]></template>
-  <template type="public" title="QT_forum_post_thread_is_question" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:if is="{{ $forum->QT_type === 'threads_questions' }}">
-	<hr class="formRowSep" />
-	<xf:radiorow name="QT_question" label="{{ phrase('type') }}" value="0">
-		<xf:option value="0" label="{{ phrase('thread') }}" />
-		<xf:option value="1" label="{{ phrase('question') }}"
-				   disabled="{{ (!$forum->canCreateQuestion()) ? 'disabled' : '' }}"
-				   hint="{{ (!$forum->canCreateQuestion()) ? phrase('QT_create_question_no_permission') : '' }}" />
-	</xf:radiorow>
-</xf:if>]]></template>
   <template type="admin" title="QT_forum_type" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:selectrow name="QT_type" value="{$forum.QT_type}" label="{{ phrase('QT_forum_type') }}">
 	<xf:option value="threads_only">{{ phrase('QT_threads_only') }}</xf:option>
 	<xf:option value="threads_questions">{{ phrase('QT_threads_and_questions') }}</xf:option>
@@ -129,6 +43,128 @@
 <hr class="formRowSep" />
 
 <!--[QT:user:after_QT]-->]]></template>
+  <template type="admin" title="QT_style_property_template_totalBestAnswersPositions" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:checkboxrow rowclass="{$rowClass}"
+	label="{$titleHtml}"
+	hint="{$hintHtml}"
+	explain="{$property.description}">
+
+	<xf:option name="{$formBaseKey}[member_profile_page]" selected="{$property.property_value.member_profile_page}">
+		{{ phrase('QT_member_profile_page') }}
+	</xf:option>
+	<xf:option name="{$formBaseKey}[member_account_menu]" selected="{$property.property_value.member_account_menu}">
+		{{ phrase('QT_member_account_menu') }}
+	</xf:option>
+</xf:checkboxrow>]]></template>
+  <template type="admin" title="QT_tools_rebuild" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro template="tools_rebuild" name="rebuild_job"
+		  arg-header="{{ phrase('QT_rebuild_best_answer_counts') }}"
+		  arg-job="QuestionThreads:RebuildBestAnswerCounts" />]]></template>
+  <template type="email" title="QT_best_answer_selected" version_id="2000070" version_string="2.0.0"><![CDATA[<mail:subject>
+	{{ phrase('QT_question_x_best_answer', {
+		'title': prefix('thread', $thread, 'escaped') . $thread.title
+	}) }}
+</mail:subject>
+
+<xf:if is="$receiver.user_id === $post.user_id">
+	{{ phrase('QT_question_your_answer_best_selected_email_html', {
+		'receiver': $receiver.username,
+		'sender': username_link_email($sender, $sender.username),
+		'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
+	}) }}	
+	<xf:else />
+	{{ phrase('QT_question_best_answer_selected_email_html', {
+		'receiver': $receiver.username,
+		'sender': username_link_email($sender, $sender.username),
+		'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
+	}) }}
+</xf:if>
+
+<h2><a href="{{ link('canonical:posts', $post) }}">{{ prefix('thread', $thread, 'escaped') }}{$thread.title}</a></h2>
+
+<xf:if is="$xf.options.emailWatchedThreadIncludeMessage">
+	<div class="message">{{ bb_code_type('emailHtml', $post.message, 'post', $post) }}</div>
+</xf:if>
+
+<xf:macro template="thread_forum_macros" name="go_thread_bar" arg-thread="{$thread}" arg-watchType="threads" />
+
+<xf:macro template="QT_email_macros" name="watched_question_footer" arg-thread="{$thread}" />]]></template>
+  <template type="email" title="QT_email_macros" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro name="watched_question_footer" arg-thread="!">
+	{{ phrase('QT_watched_question_email_html_footer', {
+		'thread': '<a href="' . link('canonical:threads', $thread) . '">' . $thread.title . '</a>',
+		'board': $xf.options.boardTitle,
+		'disable_this_link': link('canonical:email-stop/content', $xf.toUser, {'t': 'thread', 'id': $thread.thread_id}),
+		'disable_all_link': link('canonical:email-stop/all', $xf.toUser)
+	}) }}
+</xf:macro>]]></template>
+  <template type="email" title="QT_question_solved" version_id="2000070" version_string="2.0.0"><![CDATA[<mail:subject>
+	{{ phrase('QT_question_x_solved', {
+		'title': prefix('thread', $thread, 'escaped') . $thread.title
+	}) }}
+</mail:subject>
+
+{{ phrase('QT_watched_question_solved_email_html', {
+	'receiver': $receiver.username,
+	'sender': username_link_email($sender, $sender.username),
+	'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
+}) }}
+
+<h2><a href="{{ link('canonical:posts', $post) }}">{{ prefix('thread', $thread, 'escaped') }}{$thread.title}</a></h2>
+
+<xf:if is="$xf.options.emailWatchedThreadIncludeMessage">
+	<div class="message">{{ bb_code_type('emailHtml', $post.message, 'post', $post) }}</div>
+</xf:if>
+
+<xf:macro template="thread_forum_macros" name="go_thread_bar" arg-thread="{$thread}" arg-watchType="threads" />
+
+<xf:macro template="QT_email_macros" name="watched_question_footer" arg-thread="{$thread}" />]]></template>
+  <template type="public" title="QT_best_answer_count_macros" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro name="member_macros" arg-user="!">
+	<xf:set var="$_QT_property" value="{{ property('QT_total_best_answers_positions') }}" />
+
+	<!--[QT:stat_pairs:above_best_answers]-->
+	<xf:if is="{{ $_QT_property.member_profile_page }}">
+		<dl class="pairs pairs--rows pairs--rows--centered">
+			<dt>{{ phrase('QT_best_answers') }}</dt>
+			<dd>
+				<a href="{{ link('members/bestAnswers', $user) }}" class="fauxBlockLink-linkRow u-concealed">
+					{$user.QT_best_answer_count|number}
+				</a>
+			</dd>
+		</dl>
+	</xf:if>
+</xf:macro>
+
+<xf:macro name="message_macros" arg-extras="!" arg-user="!">
+	<xf:if is="$extras.QT_best_answer_count">
+		<dl class="pairs pairs--justified">
+			<dt>{{ phrase('QT_best_answers') }}</dt>
+			<dd>{$user.QT_best_answer_count|number}</dd>
+		</dl>
+	</xf:if>
+</xf:macro>
+
+<xf:macro name="account_visitor_menu">
+	<xf:set var="$_QT_property" value="{{ property('QT_total_best_answers_positions') }}" />
+
+	<!--[QT:stat_pairs:above_best_answers]-->
+	<xf:if is="{{ $_QT_property.member_account_menu }}">
+		<dl class="pairs pairs--justified fauxBlockLink">
+			<dt>{{ phrase('QT_best_answers') }}</dt>
+			<dd>
+				<a href="{{ link('members/bestAnswers', $xf.visitor) }}" class="fauxBlockLink-linkRow u-concealed">
+					{$xf.visitor.QT_best_answer_count|number}
+				</a>
+			</dd>
+		</dl>
+	</xf:if>
+</xf:macro>]]></template>
+  <template type="public" title="QT_forum_post_thread_is_question" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:if is="{{ $forum->QT_type === 'threads_questions' }}">
+	<hr class="formRowSep" />
+	<xf:radiorow name="QT_question" label="{{ phrase('type') }}" value="0">
+		<xf:option value="0" label="{{ phrase('thread') }}" />
+		<xf:option value="1" label="{{ phrase('question') }}"
+				   disabled="{{ (!$forum->canCreateQuestion()) ? 'disabled' : '' }}"
+				   hint="{{ (!$forum->canCreateQuestion()) ? phrase('QT_create_question_no_permission') : '' }}" />
+	</xf:radiorow>
+</xf:if>]]></template>
   <template type="public" title="QT_macros" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro name="question_mark" arg-thread="!" arg-forceState="{{ false }}">
 	<xf:if is="$forceState">
 		<xf:set var="$thread.QT_solved" value="$forceState" />
@@ -276,27 +312,6 @@
 		</xf:if>
 	</xf:if>
 </xf:if>]]></template>
-  <template type="email" title="QT_question_solved" version_id="2000070" version_string="2.0.0"><![CDATA[<mail:subject>
-	{{ phrase('QT_question_x_solved', {
-		'title': prefix('thread', $thread, 'escaped') . $thread.title
-	}) }}
-</mail:subject>
-
-{{ phrase('QT_watched_question_solved_email_html', {
-	'receiver': $receiver.username,
-	'sender': username_link_email($sender, $sender.username),
-	'board': '<a href="' . link('canonical:index') . '">' . $xf.options.boardTitle . '</a>'
-}) }}
-
-<h2><a href="{{ link('canonical:posts', $post) }}">{{ prefix('thread', $thread, 'escaped') }}{$thread.title}</a></h2>
-
-<xf:if is="$xf.options.emailWatchedThreadIncludeMessage">
-	<div class="message">{{ bb_code_type('emailHtml', $post.message, 'post', $post) }}</div>
-</xf:if>
-
-<xf:macro template="thread_forum_macros" name="go_thread_bar" arg-thread="{$thread}" arg-watchType="threads" />
-
-<xf:macro template="QT_email_macros" name="watched_question_footer" arg-thread="{$thread}" />]]></template>
   <template type="public" title="QT_search_result_post_best_answer" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:if is="$post.Thread.QT_best_answer_id === $post.post_id">
 	<xf:macro template="QT_macros" name="best_answer_mark" arg-thread="{$post.Thread}" />
 </xf:if>]]></template>
@@ -309,18 +324,6 @@
 		<xf:macro template="QT_macros" name="best_answer_mark" arg-thread="{$thread}" />
 	</xf:if>
 </xf:if>]]></template>
-  <template type="admin" title="QT_style_property_template_totalBestAnswersPositions" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:checkboxrow rowclass="{$rowClass}"
-	label="{$titleHtml}"
-	hint="{$hintHtml}"
-	explain="{$property.description}">
-
-	<xf:option name="{$formBaseKey}[member_profile_page]" selected="{$property.property_value.member_profile_page}">
-		{{ phrase('QT_member_profile_page') }}
-	</xf:option>
-	<xf:option name="{$formBaseKey}[member_account_menu]" selected="{$property.property_value.member_account_menu}">
-		{{ phrase('QT_member_account_menu') }}
-	</xf:option>
-</xf:checkboxrow>]]></template>
   <template type="public" title="QT_thread_edit_type_switcher" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:if is="{{ $thread->canEditType() }}">
 	<xf:radiorow name="QT_question" label="{{ phrase('type') }}" value="{$thread.QT_question}">
 		<xf:option value="0" label="{{ phrase('thread') }}" />
@@ -352,9 +355,6 @@
   <template type="public" title="QT_thread_view_question_mark" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:if is="$thread.QT_question">
 	<xf:macro template="QT_macros" name="question_mark" arg-thread="{$thread}" />
 </xf:if>]]></template>
-  <template type="admin" title="QT_tools_rebuild" version_id="2000070" version_string="2.0.0"><![CDATA[<xf:macro template="tools_rebuild" name="rebuild_job"
-		  arg-header="{{ phrase('QT_rebuild_best_answer_counts') }}"
-		  arg-job="QuestionThreads:RebuildBestAnswerCounts" />]]></template>
   <template type="public" title="QuestionThreads.less" version_id="2000070" version_string="2.0.0"><![CDATA[///////////////////
 /////////////////// Question mark
 ///////////////////
