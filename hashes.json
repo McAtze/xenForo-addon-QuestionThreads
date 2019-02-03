@@ -1,5 +1,5 @@
 {
-    "src/addons/QuestionThreads/addon.json": "b3c5828cc091820cc4df74b0b67f0f2e0c50b8ffc85c8740a339930d45feced6",
+    "src/addons/QuestionThreads/addon.json": "2896c6ad116b41923ba1a2ea098c85ff4267ee810c9abe81cf385d7d7661358d",
     "src/addons/QuestionThreads/Entity/BestAnswer.php": "4d7f3b86dde854bf8ce91fcea426e3b702814c55c87eb4a6e89166901925d16f",
     "src/addons/QuestionThreads/Job/AlertWatchers.php": "85e18a813a3042a1927a773228a871e171e48ed88bb05b44a436b56ae2f473d0",
     "src/addons/QuestionThreads/Job/ConvertForumThreads.php": "d692105a98cf44f6a34ca4ced4bb6f4ecae27ee04d64d682285ba8c317f73bf6",
@@ -43,7 +43,7 @@
     "src/addons/QuestionThreads/_data/style_properties.xml": "f02d72c219fdb18dd4da60702dc4592f30d262ce05d250842a49334004e37628",
     "src/addons/QuestionThreads/_data/style_property_groups.xml": "d231b6076671d500b07d515589e69616e46332095727046b512579eca49ec813",
     "src/addons/QuestionThreads/_data/templates.xml": "9e25114a7e1492f59c926f120cff68bd6b6339ba8a391600de01eb15ec5606b7",
-    "src/addons/QuestionThreads/_data/template_modifications.xml": "45d11921b0bbf9ac8920cbfbf77100a32e825558979eaf54f5989febb9b61a7d",
+    "src/addons/QuestionThreads/_data/template_modifications.xml": "decfc2e41217795b9ba654dc62278526d8cad096a74496c223420fd2b8f052cd",
     "src/addons/QuestionThreads/_data/widget_definitions.xml": "37e46965256430f24004c2e7f08ba08f9b0d1cbcc4d70e84b3f4e3ffb713e64b",
     "src/addons/QuestionThreads/_data/widget_positions.xml": "a29cee66134f6bc5d75ed9df1eef21096c24401915c5b5c774389c3d7bb2d5b3"
 }
