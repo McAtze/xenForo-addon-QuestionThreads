@@ -197,8 +197,8 @@ $0]]></replace>
     <find><![CDATA[{$forum.thread_prompt}]]></find>
     <replace><![CDATA[{{ ($forum->QT_type === 'questions_only' && $xf.options.QT_useQuestionPrompt) ? phrase('QT_question_title') : $forum.thread_prompt }}]]></replace>
   </modification>
-  <modification type="public" template="thread_list_macros" modification_key="QT_thread_list_macros_question_additions" description="Adding question mark and best answer icons before thread title" execution_order="10" enabled="1" action="str_replace">
-    <find><![CDATA[<div class="structItem-title">]]></find>
+  <modification type="public" template="thread_list_macros" modification_key="QT_thread_list_macros_question_additions" description="Adding question mark and best answer icons before thread title" execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[/<div class=\"structItem\-title\".*>/]]></find>
     <replace><![CDATA[$0
 
 <xf:include template="QT_thread_list_macros_question_additions" />]]></replace>
